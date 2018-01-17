@@ -1,10 +1,12 @@
 require "capistrano/scm/plugin"
+require 'rest_client'
+require 'json'
 
 class Capistrano::SCM::GitlabChoiceArtifact < Capistrano::SCM::Plugin
   def set_defaults
-    set_if_empty :gitlab_artifact_url, ''
-    set_if_empty :gitlab_artifact_private_token, ''
-    set_if_empty :gitlab_artifact_project, ''
+    set_if_empty :gitlab_choice_artifact_url, ''
+    set_if_empty :gitlab_choice_artifact_private_token, ''
+    set_if_empty :gitlab_choice_artifact_project, ''
   end
 
   def define_tasks
@@ -17,9 +19,14 @@ class Capistrano::SCM::GitlabChoiceArtifact < Capistrano::SCM::Plugin
 
   def create_release
     on release_roles :all do
-      execute :curl, " --header \"PRIVATE-TOKEN: #{fetch(:gitlab_artifact_private_token)}\" \"http://gitlab.rete.farm/api/v4/projects/#{fetch(:gitlab_artifact_project)}/jobs\""
+      RestClient.post("http://gitlab.rete.farm/api/v4/projects/#{fetch(:gitlab_choice_artifact_project)}/jobs", "PRIVATE-TOKEN: #{fetch(:gitlab_choice_artifact_private_token)}", :content_type => :json, :accept => :json, :timeout => 5, :open_timeout => 5){ |response, request, result| response
+        case response.code
+        when 200
+          json = JSON.parse(response)
+        end
+      }
       execute :mkdir, "-p", release_path
-      execute :wget, "-q -O #{repo_path}/artifact.zip --header=\"PRIVATE-TOKEN: #{fetch(:gitlab_artifact_private_token)}\" #{fetch(:gitlab_artifact_url)}"
+      execute :wget, "-q -O #{repo_path}/artifact.zip --header=\"PRIVATE-TOKEN: #{fetch(:gitlab_choice_artifact_private_token)}\" #{fetch(:gitlab_choice_artifact_url)}"
       execute :unzip, "-q #{repo_path}/artifact.zip -d #{fetch(:release_path)}/"
     end
   end
