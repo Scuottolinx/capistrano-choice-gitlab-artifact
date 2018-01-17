@@ -1,4 +1,4 @@
-# Capistrano::GitlabArtifact
+# Capistrano::GitlabChoiceArtifact
 
 Gitlab Artifact is a [Custom SCM Plugin](http://capistranorb.com/documentation/advanced-features/custom-scm/) for Capistrano v3
 

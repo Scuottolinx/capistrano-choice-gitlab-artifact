@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.version       = '0.0.1'
   gem.authors       = ["Antonio Scuotto"]
   gem.summary       = %q{Capistrano Gitlab Choice Artifact - Deploy artifact from Gitlab build}
-  gem.homepage      = "http://github.com/L0rD59/capistrano-gitlab-artifact"
+  gem.homepage      = "https://github.com/Scuottolinx/capistrano-choice-gitlab-artifact"
 
   gem.files         = `git ls-files`.split($/)
   gem.require_paths = ["lib"]
