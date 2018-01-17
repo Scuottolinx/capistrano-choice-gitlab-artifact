@@ -1,6 +1,6 @@
 require "capistrano/scm/plugin"
-require 'rest_client'
-require 'json'
+require "rest_client"
+require "json"
 
 class Capistrano::SCM::GitlabChoiceArtifact < Capistrano::SCM::Plugin
   def set_defaults
